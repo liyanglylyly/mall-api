@@ -1,16 +1,18 @@
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { User } from './modules/user/entities/user.entity';
+import { config } from 'dotenv';
+
+config({ path: `${process.cwd()}/.env.development` });
 
 export const dataSourceOptions = {
-  type: 'mysql',
-  host: '124.221.1.101',
-  port: 3306,
-  username: 'root',
-  password: 'admin123',
-  database: 'mall',
+  type: process.env['DB_TYPE'],
+  host: process.env['DB_HOST'],
+  port: Number(process.env['DB_PORT']),
+  username: process.env['DB_USERNAME'],
+  password: process.env['DB_PASSWORD'],
+  database: process.env['DB_DATABASE'],
   synchronize: false,
   logging: true,
-  entities: [User],
+  entities: ['src/modules/**/entities/*.entity.ts'],
   poolSize: 10,
   migrations: ['src/migrations/**.ts'],
   connectorPackage: 'mysql2',
